@@ -34,24 +34,24 @@ int reformat_bad_numbers(char *str_number, int base){
 long pow(long base, int power){
 	
 	for(int i = 0; i < power; i++){
-		base *= power
+		base *= power;
 	}
 
-	return base
+	return base;
 }
 
 int find_length(char base_x[MAX_NUM_LEN]){
 
 	for(int i = 0; i < MAX_NUM_LEN; i++){
 		if(base_x[MAX_NUM_LEN] == '\0'){
-			return i+1
+			return i+1;
 		}
 	}
 }
 
 long whole_base_to_dec(char base_x[MAX_NUM_LEN], int base){
 
-	int str_len = find_length(base_x)
+	int str_len = find_length(base_x);
 	long running_total = 0;
 
 	for(int i = str_len-1; i > -1; i--){
