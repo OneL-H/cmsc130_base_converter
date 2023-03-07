@@ -2,14 +2,14 @@
 using namespace std;
 
 char determine_validity(string inp, int base);
-string convert_bases(string init_number, int init_base, int target_base);
+void convert_bases(string init_number, int init_base, int target_base);
 unsigned long long whole_to_base_10(string inp, int init_base);
 string whole_base_10_to_another(unsigned long long inp, int target_base);
 string fraction_to_another_base(unsigned long long numerator, unsigned long long denominator, int target_base);
 unsigned long long power(int base, int exponent);
 
 char valid_chars[16] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
-int ceil_log_2[16] = {0, 0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4};
+int ceil_log_2[17] = {0, 0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4};
 
 // NOTES: unsigned long long = 2^64
 // therefore, maximum character to represent chars of radix 16
@@ -23,10 +23,17 @@ int ceil_log_2[16] = {0, 0, 1, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4};
 
 int main()
 {
+    string input_base_x;
+    int init_base;
+    int target_base;
+    
+    cout << "Some decimal trimming could be applied to try to prevent errors from happening" << endl;
+    cout << "The number shown along with the result is what was converted" << endl;
+    cout << "idk sir it might throw down some errors when the numbers get too long" << endl;
+
     while (true)
     {
-        string input_base_x;
-
+        
         cout << "Enter number to convert, or enter \"Q\" to [Q]uit" << endl;
         cin >> input_base_x;
 
@@ -36,7 +43,6 @@ int main()
             break;
         } // exit if "Q" is entered
 
-        int init_base;
         cout << "Indicate base of input number:" << endl;
         cin >> init_base;
 
@@ -55,7 +61,6 @@ int main()
             continue;
         }
 
-        int target_base;
         cout << "Input target base:" << endl;
         cin >> target_base;
 
@@ -65,8 +70,8 @@ int main()
             continue;
         }
 
-        cout << input_base_x << " (base " << init_base << ") in" << endl;
-        cout << "base " << target_base << " is " << convert_bases(input_base_x, init_base, target_base) << endl;
+        convert_bases(input_base_x, init_base, target_base);
+        
     }
 
     return 0;
@@ -115,7 +120,7 @@ char determine_validity(string inp, int base)
     return '\0';
 }
 
-string convert_bases(string init_number, int init_base, int target_base)
+void convert_bases(string init_number, int init_base, int target_base)
 {
 
     int radix_point_loc = init_number.find('.');
@@ -134,8 +139,8 @@ string convert_bases(string init_number, int init_base, int target_base)
         decimal_init_number = "0";
     }
 
-    // cout << "whole: " << whole_init_number << " decimal: " << decimal_init_number << endl;
-    // cout << "whole len: " << whole_init_number.length() << " decimal len: " << decimal_init_number.length() << endl;
+    cout << "whole: " << whole_init_number << " decimal: " << decimal_init_number << endl;
+    //cout << "whole len: " << whole_init_number.length() << " decimal len: " << decimal_init_number.length() << endl;
     unsigned long long whole_base_10;
     unsigned long long numerator_base_10;
 
@@ -146,8 +151,8 @@ string convert_bases(string init_number, int init_base, int target_base)
     }
     else
     {
-        whole_base_10 = stoi(whole_init_number);
-        numerator_base_10 = stoi(decimal_init_number);
+        whole_base_10 = stoull(whole_init_number);
+        numerator_base_10 = stoull(decimal_init_number);
     }
 
     // cout << "whole part: " << whole_base_10;
@@ -160,13 +165,21 @@ string convert_bases(string init_number, int init_base, int target_base)
     // cout << "whole part in new base:" << whole_target_base << endl;
     // cout << "decimal part in new base: " << decimal_target_base << endl;
 
+
+    cout << whole_init_number;
+    if (radix_point_loc != -1){
+        cout << "." << decimal_init_number;
+    }
+    cout << " (base " << init_base << ") in" << endl;
+    cout << "base " << target_base << " is ";
+    
     if (radix_point_loc == -1)
     {
-        return whole_target_base;
+        cout << whole_target_base << endl;
     }
     else
     {
-        return whole_target_base + "." + decimal_target_base;
+        cout << whole_target_base + "." + decimal_target_base << endl;
     }
 }
 
@@ -194,7 +207,7 @@ string whole_base_10_to_another(unsigned long long inp, int target_base)
 
     string output = "";
     int remainder;
-    while (inp > target_base)
+    while (inp >= target_base)
     {
         remainder = inp % target_base;
         output = valid_chars[remainder] + output;
